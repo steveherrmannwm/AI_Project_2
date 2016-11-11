@@ -91,3 +91,6 @@ ENV/
 
 # Pycharm settings
 .idea/*
+
+# Ignore images
+*.png
