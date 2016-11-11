@@ -76,17 +76,17 @@ if __name__ == '__main__':
     # You cannot see the 20 news groups data, because of MatLibPlot. So I included examples
     # as files.
     #    LoadMNIST.dispImages('MNIST',trX_images,trY)
-    # raw_input('Press enter to continue...')
+    # # raw_input('Press enter to continue...')
 
     print '\nNow we vary the number of iterations for the Gradient Descent'
     print 'with log loss and see how it affects accuracy...'
     print '\nIf the picture does not pop up, go find it...'
     print '\nClose the image to continue...'
-    epochs = [1, 2, 3, 10, 50, 100]
+    epochs = [1, 5, 10, 20, 35, 50, 100]
     res = run_comps('iterations', epochs, trX, trY, deX, deY,
                     "Figure 1: Iterations vs. accuracy (MNIST)",
                     "iterations", "../SGD_iterations.png")
-    raw_input('Press enter to continue...')
+    # raw_input('Press enter to continue...')
 
     print '\nNow we vary the learning rate for the Gradient Descent'
     print 'with log loss and see how it affects accuracy...'
@@ -96,14 +96,14 @@ if __name__ == '__main__':
     res = run_comps('learnRate', etas, trX, trY, deX, deY,
                     "Figure 2: Learning rate vs. accuracy (MNIST)",
                     "eta", "../SGD_etas.png")
-    raw_input('Press enter to continue...')
+    # raw_input('Press enter to continue...')
 
     print "\nRunning test on regularizer alpha \n"
-    regularizer = [0.0001, 0.0005, 0.001, 0.005, 0.1, 0.5, 1]
+    regularizer = [0.1, 0.25, 0.5, 0.75, 1]
     res = run_comps('regularizer', regularizer, trX, trY, deX, deY,
                     "Figure 3: Regularizer Alpha vs. accuracy (MNIST)",
                     "Regularizer Alpha", "../SGD_regularizer.png")
-    raw_input('Press enter to continue...')
+    # raw_input('Press enter to continue...')
 
     print "\nRunning test on Loss Functions\n"
     print "Loss functions are in this order: ", ["log", "hinge", "squared_loss", "perceptron"], "\n"
@@ -111,6 +111,6 @@ if __name__ == '__main__':
     res = run_comps('loss', loss, trX, trY, deX, deY,
                     "Figure 5: Loss Function vs. accuracy (MNIST)",
                     "Loss Function", "../SGD_loss_rate.png")
-    raw_input('Press enter to continue...')
+    # raw_input('Press enter to continue...')
 
     print 'Done'

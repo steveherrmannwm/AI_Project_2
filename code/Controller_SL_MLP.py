@@ -29,11 +29,13 @@ def run_comps(paramType,param,X,Y,X_test,Y_test,title,xlbl,figno):
     accTe = []
     for i in range(len(param)):
         if 'nodes' in paramType:
-            learn = MLPClassifier(hidden_layer_sizes=(param[i], ), activation='tanh', solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+            learn = MLPClassifier(hidden_layer_sizes=(param[i], ), activation='tanh', solver='sgd', alpha=0)
         if 'learnRate' in paramType:
-            learn = MLPClassifier(hidden_layer_sizes=(2, ), activation='tanh', solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+            rates = ['constant', 'adaptive']
+            learn = MLPClassifier(hidden_layer_sizes=(5, ), activation='tanh', solver='sgd',
+                                  learning_rate=rates[i], alpha=0)
         if 'regularizer' in paramType:
-            learn = MLPClassifier(hidden_layer_sizes=(2, ), activation='tanh', solver='sgd', alpha=0.0001, batch_size='auto', learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+            learn = MLPClassifier(hidden_layer_sizes=(5, ), activation='tanh', solver='sgd', alpha=param[i])
         print '\n', xlbl, param[i]
         testRun = tt.TrainTest_SL(learn, X, Y, X_test, Y_test)
         test_info = testRun.run_tt()
@@ -41,7 +43,7 @@ def run_comps(paramType,param,X,Y,X_test,Y_test,title,xlbl,figno):
         model_pred = learn.predict(X)
         sizeY = model_pred.shape
         if len(sizeY) < 2:
-            model_pred = np.reshape(model_pred, (sizeY[0],1))
+            model_pred = np.reshape(model_pred, (sizeY[0], 1))
         val = [Y == model_pred]
         val_sum = sum(sum(val))
         print 'accTr = ', float(val_sum)/(len(Y)*1.0)
@@ -72,30 +74,26 @@ if __name__ == '__main__':
 #    LoadMNIST.dispImages('MNIST',trX_images,trY)
     #raw_input('Press enter to continue...')
  
-    print '\nNow we vary the number of iterations for the Gradient Descent'
-    print 'with log loss and see how it affects accuracy...'
-    print '\nIf the picture does not pop up, go find it...'
-    print '\nClose the image to continue...'
-    nodes = [2, 5, 10]
+    print 'Vary the number of nodes'
+    print 'Close the image to continue...'
+    nodes = [2, 5, 10, 25, 50]
     res = run_comps('nodes', nodes, trX, trY, deX, deY,
                     "Figure 1: Nodes vs. accuracy (MNIST)",
-                    "Nodes","../MLP_iterations.png")
+                    "Nodes","../MLP_nodes.png")
     raw_input('Press enter to continue...')
-     
-    print '\nNow we vary the learning rate for the Gradient Descent'
-    print 'with log loss and see how it affects accuracy...'
-    print '\nIf the picture does not pop up, go find it...'
-    print '\nClose the image to continue...'
-    etas = [0.1,0.3,0.6,0.9]
+
+    print 'Vary the learning rate'
+    print 'Close the image to continue...'
+    etas = [1, 2]
     res = run_comps('learnRate', etas, trX, trY, deX, deY,
                     "Figure 2: Learning rate vs. accuracy (MNIST)",
                     "Learning Rate","../MLP_etas.png")
     raw_input('Press enter to continue...')
 
-    regularizer = [0.0001, 0.0005, 0.001, 0.005, 0.1, 0.5, 1]
+    print 'Vary the regularizer alpha'
+    regularizer = [0.1, 0.25, 0.5, 0.75, 1]
     res = run_comps('regularizer', regularizer, trX, trY, deX, deY,
                     "Figure 3: Regularizer Alpha vs. accuracy (MNIST)",
                     "Regularizer Alpha","../MLP_regularizer.png")
-    raw_input('Press enter to continue...')
      
     print 'Done'
